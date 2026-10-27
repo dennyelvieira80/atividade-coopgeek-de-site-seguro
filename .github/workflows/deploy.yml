@@ -23,7 +23,7 @@ jobs:
       VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2anFqbGR6ZGVzd3dyaG9ybGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwNTU0NTMsImV4cCI6MjEwODYzMTQ1M30.p-Ck4y0lLRlSy0RQvxuD8XgR5fdf17PtzvNlzaDuevQ' }}
       VITE_BASE_PATH: /atividade-coopgeek-de-site-seguro/
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - uses: actions/setup-node@v4
