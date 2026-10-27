@@ -1,0 +1,20 @@
+# Configuração mínima do Supabase CLI (os demais valores usam os padrões).
+# Gere a versão completa com `supabase init` se precisar customizar mais.
+project_id = "studyflow-ai"
+
+[api]
+schemas = ["public"]
+max_rows = 100
+
+[auth]
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/"]
+minimum_password_length = 8
+
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+
+[functions.generate-study-plan]
+# O gateway do Supabase rejeita requisições sem JWT válido antes de chegar à função.
+verify_jwt = true

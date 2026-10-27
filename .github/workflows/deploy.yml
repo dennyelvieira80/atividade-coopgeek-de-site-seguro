@@ -1,0 +1,54 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Privilégio mínimo por padrão; o job de deploy recebe só o necessário.
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Valores PÚBLICOS configurados em Settings > Secrets and variables > Actions > Variables
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://xvjqjldzdeswwrhorlld.supabase.co' }}
+      VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2anFqbGR6ZGVzd3dyaG9ybGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwNTU0NTMsImV4cCI6MjEwODYzMTQ1M30.p-Ck4y0lLRlSy0RQvxuD8XgR5fdf17PtzvNlzaDuevQ' }}
+      VITE_BASE_PATH: /atividade-coopgeek-de-site-seguro/
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm run check:secrets
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

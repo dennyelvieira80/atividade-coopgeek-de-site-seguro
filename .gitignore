@@ -1,0 +1,23 @@
+# Dependências e builds
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Segredos — nunca versionar
+.env
+.env.*
+!.env.example
+supabase/functions/.env
+supabase/.temp/
+supabase/.branches/
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.log
